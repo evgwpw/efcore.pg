@@ -83,9 +83,13 @@ namespace Microsoft.EntityFrameworkCore.Design.Internal
 
             if (language != "CSharp")
                 return null;
-
+            var tmp = Convert.ToString(annotation.Value);
+            if (!string.IsNullOrEmpty(tmp) && tmp.IndexOf('"') > 0)
+            {
+                tmp = tmp.Replace("\"", "\\\"");
+            }
             return annotation.Name == NpgsqlAnnotationNames.Comment
-                ? $".{nameof(NpgsqlPropertyBuilderExtensions.ForNpgsqlHasComment)}(\"{annotation.Value}\")"
+                ? $".{nameof(NpgsqlPropertyBuilderExtensions.ForNpgsqlHasComment)}(\"{tmp}\")"
                 : null;
         }
 
