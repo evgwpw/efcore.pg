@@ -126,7 +126,12 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal
                 }
 
             case NpgsqlAnnotationNames.Comment:
-                return new MethodCallCodeFragment(nameof(NpgsqlPropertyBuilderExtensions.ForNpgsqlHasComment), annotation.Value);
+                    var tmp = Convert.ToString(annotation.Value);
+                    if (!string.IsNullOrEmpty(tmp) && tmp.IndexOf('"') > 0)
+                    {
+                        tmp = tmp.Replace("\"", "\\\"");
+                    }
+                    return new MethodCallCodeFragment(nameof(NpgsqlPropertyBuilderExtensions.ForNpgsqlHasComment), tmp);// annotation.Value);
             }
 
             return null;

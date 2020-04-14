@@ -39,6 +39,10 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Scaffolding.Internal
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         public override MethodCallCodeFragment GenerateUseProvider(string connectionString)
-            => new MethodCallCodeFragment(nameof(NpgsqlDbContextOptionsExtensions.UseNpgsql), connectionString);
+        // => new MethodCallCodeFragment(nameof(NpgsqlDbContextOptionsExtensions.UseNpgsql), connectionString);
+        {
+            var getConnString = "System.Configuration.ConfigurationManager.ConnectionStrings[\"ConnectionString\"].ConnectionString";
+            return new MethodCallCodeFragment(nameof(NpgsqlDbContextOptionsExtensions.UseNpgsql), getConnString);
+        }
     }
 }
